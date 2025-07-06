@@ -10,9 +10,11 @@ router.get("/", getPosts);
 router.get("/:postId", getPost);
 router.get("/user/:username", getUserPosts);
 
-// protected proteced
-router.post("/", protectRoute, upload.single("image"), createPost);
-router.post("/:postId/like", protectRoute, likePost);
-router.delete("/:postId", protectRoute, deletePost);
+// protected
+router.use(protectRoute);
+
+router.post("/", upload.single("image"), createPost);
+router.post("/:postId/like", likePost);
+router.delete("/:postId", deletePost);
 
 export default router;
