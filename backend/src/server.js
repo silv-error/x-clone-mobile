@@ -1,6 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import morgan from "morgan";
+import helmet from "helmet";
 
 import { arcjetMiddleware } from "./middleware/arcjet.middleware.js";
 import { clerkMiddleware } from "@clerk/express";
@@ -19,7 +21,9 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(cors({ origin: "http://localhost:5173" }));
-app.use(express.json({ limit: "10mb" }));
+app.use(helmet());
+app.use(morgan("dev"));
+app.use(express.json());
 app.use(clerkMiddleware());
 app.use(arcjetMiddleware);
 
@@ -29,6 +33,7 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/notifications", notificationRoutes);
 
 app.use((error, _req, res, _next) => {
+  logger.error(`Server error: ${error.message}`);
   res
     .status(500)
     .json({ error: `${process.env.NODE_ENV === "development" ? `${error.message}` : "Internal server error"}` });
