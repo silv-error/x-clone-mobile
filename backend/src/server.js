@@ -43,11 +43,15 @@ app.use((error, _req, res, _next) => {
   try {
     await connectDB();
 
-    app.listen(port, () => {
-      logger.info(`Server is running at http://localhost:${port}`);
-    });
+    if (process.env.NODE_ENV !== "production") {
+      app.listen(port, () => {
+        logger.info(`Server is running at http://localhost:${port}`);
+      });
+    }
   } catch (error) {
     logger.warn("Failed to start server:", error.message);
     process.exit(1);
   }
 })();
+
+export default app;
