@@ -1,8 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
-import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
+import cors from "cors";
 
 import { arcjetMiddleware } from "./middleware/arcjet.middleware.js";
 import { clerkMiddleware } from "@clerk/express";
@@ -20,7 +20,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json());
